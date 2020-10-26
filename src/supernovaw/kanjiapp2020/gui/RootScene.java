@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 abstract class RootScene extends Scene {
 	private Runnable repaintFull;
 	private Consumer<Rectangle> repaintRect;
+	private Runnable refreshMousePosition;
 	private Point mousePosition;
 
 	public RootScene() {
@@ -22,9 +23,15 @@ abstract class RootScene extends Scene {
 		repaintRect.accept(r);
 	}
 
-	public final void setRepaintCallers(Runnable repaintFull, Consumer<Rectangle> repaintRect) {
+	@Override
+	protected void refreshMousePosition() {
+		refreshMousePosition.run();
+	}
+
+	public final void setCallers(Runnable repaintFull, Consumer<Rectangle> repaintRect, Runnable refreshMousePosition) {
 		this.repaintFull = repaintFull;
 		this.repaintRect = repaintRect;
+		this.refreshMousePosition = refreshMousePosition;
 	}
 
 	@Override

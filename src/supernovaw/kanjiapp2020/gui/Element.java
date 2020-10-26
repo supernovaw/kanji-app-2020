@@ -3,7 +3,7 @@ package supernovaw.kanjiapp2020.gui;
 import java.awt.*;
 
 public abstract class Element implements InputListener {
-	private final Scene parent;
+	protected final Scene parent;
 
 	public Element(Scene parent) {
 		if (parent == null && !(this instanceof RootScene))

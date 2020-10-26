@@ -22,7 +22,7 @@ public final class Window {
 
 		rootScene.onSizeChanged(new Dimension(width, height));
 		initFrame(title, width, height, icons);
-		rootScene.setRepaintCallers(() -> frameContent.repaint(), rect -> frameContent.repaint(rect));
+		rootScene.setCallers(() -> frameContent.repaint(), rect -> frameContent.repaint(rect), this::refreshMousePosition);
 		rootScene.setDisplayed(true);
 		InputEvents.redirectEvents(frame, rootScene);
 	}
@@ -87,13 +87,7 @@ public final class Window {
 				rootScene.onSizeChanged(frameContent.getSize());
 				rootScene.onFullscreenChanged(fullscreen);
 
-				Point newMousePos = frameContent.getMousePosition();
-				if (newMousePos != null) {
-					MouseEvent event = new MouseEvent(frameContent, 0, System.currentTimeMillis(),
-							0, newMousePos.x, newMousePos.y, 0, false);
-					rootScene.mouseMoved(event);
-					rootScene.onMousePositionChanged(newMousePos);
-				}
+				refreshMousePosition();
 			}
 		});
 		frameContent.addMouseMotionListener(new MouseAdapter() {
@@ -107,6 +101,19 @@ public final class Window {
 				rootScene.onMousePositionChanged(e.getPoint());
 			}
 		});
+	}
+
+	/* Makes a new mouseMoved event manually, for situations
+	 * when the mouse did not move itself, but the elements below
+	 * it did, and they need to receive a new mouse position. */
+	protected void refreshMousePosition() {
+		Point newMousePos = frameContent.getMousePosition();
+		if (newMousePos != null) {
+			MouseEvent event = new MouseEvent(frameContent, 0, System.currentTimeMillis(),
+					0, newMousePos.x, newMousePos.y, 0, false);
+			rootScene.mouseMoved(event);
+			rootScene.onMousePositionChanged(newMousePos);
+		}
 	}
 
 	protected void toggleFullscreen() {

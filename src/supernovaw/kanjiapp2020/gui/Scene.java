@@ -34,6 +34,10 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 		layout.removeElement(e);
 	}
 
+	protected final List<Element> getElements() {
+		return elements;
+	}
+
 	protected void onSizeChanged(Dimension size) {
 		layout.setSize(size.width, size.height);
 		for (Element e : elements)
@@ -42,7 +46,7 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 	}
 
 	@Override
-	public final void iterateOverChildren(Consumer<InputListener> c) {
+	public void iterateOverChildren(Consumer<InputListener> c) {
 		elements.forEach(c);
 	}
 
@@ -74,6 +78,10 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 		repaintBoundsInParent.x += thisSceneBounds.x;
 		repaintBoundsInParent.y += thisSceneBounds.y;
 		super.repaint(repaintBoundsInParent);
+	}
+
+	protected void refreshMousePosition() {
+		parent.refreshMousePosition();
 	}
 
 	@Override

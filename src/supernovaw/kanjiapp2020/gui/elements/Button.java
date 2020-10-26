@@ -116,17 +116,19 @@ public class Button extends Element {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		hoverEase.setSwitched(getButtonForm().contains(e.getPoint()));
+		boolean in = getButtonForm().contains(e.getPoint());
+		if (!in) holdEase.setSwitched(false);
+		hoverEase.setSwitched(in);
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mouseMoved(e);
+		boolean in = getButtonForm().contains(e.getPoint());
+		hoverEase.setSwitched(in);
 		if (!SwingUtilities.isLeftMouseButton(e))
 			return;
-		if (!getButtonForm().contains(e.getPoint())) {
-			holdEase.setSwitched(false); // when dragging outside bounds, lose focus (hold)
-		}
+		// when dragging outside bounds, lose focus (hold)
+		if (!in) holdEase.setSwitched(false);
 	}
 
 	@Override
