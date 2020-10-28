@@ -84,6 +84,29 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 		parent.refreshMousePosition();
 	}
 
+	protected void stackAdd(Class<? extends Scene> sceneClass) {
+		checkStackAvailability();
+		StackScene ss = (StackScene) parent.parent;
+		ss.add(sceneClass);
+	}
+
+	protected void stackChange(Class<? extends Scene> sceneClass) {
+		checkStackAvailability();
+		StackScene ss = (StackScene) parent.parent;
+		ss.change(sceneClass);
+	}
+
+	protected void stackRemove() {
+		checkStackAvailability();
+		StackScene ss = (StackScene) parent.parent;
+		ss.remove();
+	}
+
+	private void checkStackAvailability() {
+		if (parent == null || !(parent.parent instanceof StackScene))
+			throw new Error("This scene doesn't belong to a StackScene");
+	}
+
 	@Override
 	protected void setDisplayed(boolean displayed) {
 		elements.forEach(e -> e.setDisplayed(displayed));

@@ -18,28 +18,30 @@ public class TransitionScene extends Scene {
 		fadeOut = new FadeOutAnimation(ANIMATION_DURATION, this);
 	}
 
-	public void setCurrent(Scene s) {
+	// returns whether running this method resulted in a scene change
+	public boolean setCurrent(Scene s) {
 		if (s == null) throw new IllegalArgumentException("Null argument scene");
+		if (s == current || fadeOut.isAnimating()) return false;
 
-		if (fadeOut.isAnimating()) return;
 		if (!getElements().contains(s)) {
 			addElement(s);
 			s.onSizeChanged(getLayout().getBounds(s).getSize());
 		}
-		if (current != null) {
-			current.setDisplayed(false);
-			fadeOut.animate(current);
-		}
+		if (current != null) current.setDisplayed(false);
+		fadeOut.animate(current);
 		current = s;
 		s.setDisplayed(true);
 
-		repaint();
+		return true;
 	}
 
 	@Override
 	public void iterateOverChildren(Consumer<InputListener> c) {
 		if (current != null) c.accept(current);
-		if (fadeOut.isAnimating()) c.accept((Scene) fadeOut.getParameter(0));
+		if (fadeOut.isAnimating()) {
+			Scene fading = (Scene) fadeOut.getParameter(0);
+			if (fading != null) c.accept(fading);
+		}
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class TransitionScene extends Scene {
 
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - f));
 			Scene fading = (Scene) fadeOut.getParameter(0);
-			fading.paint(g);
+			if (fading != null) fading.paint(g);
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, f));
 			if (current != null) current.paint(g);
 
