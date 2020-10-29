@@ -2,6 +2,7 @@ package supernovaw.kanjiapp2020.gui.scenes;
 
 import supernovaw.kanjiapp2020.gui.Scene;
 import supernovaw.kanjiapp2020.gui.elements.Button;
+import supernovaw.kanjiapp2020.gui.elements.Checkbox;
 import supernovaw.kanjiapp2020.gui.layouts.BordersRelativeLayout;
 
 public class ModeSelectionScene extends Scene {
@@ -13,5 +14,9 @@ public class ModeSelectionScene extends Scene {
 		Button b = new Button(this, "Cancel", this::stackRemove);
 		addElement(b);
 		l.place(b, new Integer[]{-65, -10, 100, 30, 1, 1});
+
+		Checkbox cb = new Checkbox(this, "Example checkbox");
+		addElement(cb);
+		l.place(cb, new Integer[]{0, 0, 200, 30, 0, 0});
 	}
 }
