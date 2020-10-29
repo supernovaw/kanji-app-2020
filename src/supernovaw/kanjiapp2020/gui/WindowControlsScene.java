@@ -309,7 +309,7 @@ final class WindowControlsScene extends RootScene {
 			double alpha = maxAlphaHover * colorHover + (maxAlphaHold - maxAlphaHover) * colorHold;
 
 			g.setColor(new Color(255, 255, 255, (int) alpha));
-			double offset = positionPhase * 2 + 10; // offset towards left-top
+			double offset = positionPhase * 6 + 6; // offset towards left-top
 			paintResizeIcon(g, r.x + r.width - offset, r.y + r.height - offset);
 		}
 
