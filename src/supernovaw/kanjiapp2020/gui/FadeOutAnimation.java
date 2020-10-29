@@ -72,4 +72,10 @@ public class FadeOutAnimation {
 		if (phase == 1) return phase;
 		else return Ease.easeInOutSine(phase);
 	}
+
+	public double getEaseOutCubic() {
+		double phase = getPhase();
+		if (phase == 1) return phase;
+		else return Ease.easeOutCubic(phase);
+	}
 }

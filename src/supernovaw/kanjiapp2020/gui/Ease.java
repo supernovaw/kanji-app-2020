@@ -41,6 +41,11 @@ public class Ease {
 		else return 1 - 4 * Math.pow(1 - f, 3);
 	}
 
+	public static double easeOutCubic(double f) {
+		checkForEasing(f);
+		return 1 - Math.pow(1 - f, 3);
+	}
+
 	private static void checkForEasing(double f) {
 		if (f < 0 || f > 1) throw new IllegalArgumentException("f has to fall within [0..1]");
 	}
@@ -111,5 +116,9 @@ public class Ease {
 
 	public double getEaseInOutCubic() {
 		return easeInOutCubic(getPhase());
+	}
+
+	public double getEaseOutCubic() {
+		return easeOutCubic(getPhase());
 	}
 }
