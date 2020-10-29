@@ -12,6 +12,7 @@ public class Theme {
 	private static final Font japaneseFont;
 	private static final float fontSize = 20f;
 	private static final BufferedImage backgroundImage;
+	private static double backgroundDim = 0.2;
 
 	static {
 		uiFont = Assets.loadFont("SFProText-Light.ttf").deriveFont(fontSize);
@@ -47,5 +48,13 @@ public class Theme {
 
 	public static BufferedImage getBackgroundImage() {
 		return backgroundImage;
+	}
+
+	public static double getBackgroundDim() {
+		return backgroundDim;
+	}
+
+	public static void setBackgroundDim(double backgroundDim) {
+		Theme.backgroundDim = backgroundDim;
 	}
 }

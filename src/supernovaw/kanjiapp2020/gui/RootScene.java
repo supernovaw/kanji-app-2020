@@ -24,6 +24,11 @@ abstract class RootScene extends Scene {
 	}
 
 	@Override
+	protected final void repaintEntirely() {
+		repaintFull.run();
+	}
+
+	@Override
 	protected void refreshMousePosition() {
 		refreshMousePosition.run();
 	}

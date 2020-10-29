@@ -22,6 +22,10 @@ public abstract class Element implements InputListener {
 		parent.repaint(r);
 	}
 
+	protected void repaintEntirely() {
+		parent.repaintEntirely();
+	}
+
 	protected Rectangle getRepaintBounds() {
 		return getBounds();
 	}

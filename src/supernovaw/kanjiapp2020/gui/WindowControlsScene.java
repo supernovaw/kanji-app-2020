@@ -52,7 +52,7 @@ final class WindowControlsScene extends RootScene {
 		at.translate(bg.getWidth() / -2d, bg.getHeight() / -2d);
 		g.drawImage(bg, at, null);
 
-		g.setColor(Theme.background(0.2));
+		g.setColor(Theme.background(Theme.getBackgroundDim()));
 		g.fillRect(0, 0, r.width, r.height);
 
 		Rectangle clip = g.getClipBounds();
