@@ -70,6 +70,10 @@ public final class StackScene extends Scene {
 		}
 	}
 
+	public boolean removeAvailable() {
+		return scenesStack.size() > 1;
+	}
+
 	private static class StackLayout extends Layout {
 		private int width, height;
 

@@ -1,6 +1,7 @@
 package supernovaw.kanjiapp2020.gui;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -102,9 +103,24 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 		ss.remove();
 	}
 
+	protected boolean stackRemoveAvailable() {
+		checkStackAvailability();
+		StackScene ss = (StackScene) parent.parent;
+		return ss.removeAvailable();
+	}
+
 	private void checkStackAvailability() {
 		if (parent == null || !(parent.parent instanceof StackScene))
 			throw new Error("This scene doesn't belong to a StackScene");
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		InputEventsForwarder.super.keyPressed(e);
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && parent != null &&
+				parent.parent instanceof StackScene && stackRemoveAvailable()) {
+			stackRemove();
+		}
 	}
 
 	@Override
