@@ -1,5 +1,7 @@
 package supernovaw.kanjiapp2020.gui;
 
+import supernovaw.kanjiapp2020.cards.FuriganaText;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
@@ -57,5 +59,32 @@ public class TextUtils {
 
 	public static Area getTextArea(String text, Rectangle bounds, Graphics2D g) {
 		return getTextArea(text, centerStringX(g, text, bounds), centerStringY(g, bounds), g);
+	}
+
+	public static Area getTextArea(FuriganaText text, double x, double y, Font f) {
+		Area area = new Area(f.createGlyphVector(FONT_RENDER_CONTEXT, text.getText()).getOutline());
+		Font furiganaFont = f.deriveFont(f.getSize2D() * FuriganaText.FURIGANA_SCALE);
+
+		double partX = 0;
+		for (int i = 0; i < text.getParts(); i++) {
+			double width = stringWidth(text.getTextPart(i), f);
+			String furigana = text.getFuriganaPart(i);
+			if (furigana == null) {
+				partX += width;
+				continue;
+			}
+			double furiganaX = partX - stringWidth(furigana, furiganaFont) / 2 + width / 2d;
+			double furiganaY = -f.getSize2D();
+			Area furiganaPart = getTextArea(furigana, furiganaX, furiganaY, furiganaFont);
+			area.add(furiganaPart);
+			partX += width;
+		}
+
+		area.transform(AffineTransform.getTranslateInstance(x, y + furiganaFont.getSize2D() / 2d));
+		return area;
+	}
+
+	public static Area getTextArea(FuriganaText text, double x, double y, Graphics2D g) {
+		return getTextArea(text, x, y, g.getFont());
 	}
 }

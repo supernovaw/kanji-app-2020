@@ -4,9 +4,13 @@ import supernovaw.kanjiapp2020.gui.Scene;
 import supernovaw.kanjiapp2020.gui.Theme;
 import supernovaw.kanjiapp2020.gui.elements.Button;
 import supernovaw.kanjiapp2020.gui.elements.Label;
+import supernovaw.kanjiapp2020.gui.elements.TextField;
 import supernovaw.kanjiapp2020.gui.layouts.BordersRelativeLayout;
 
 public class MainScene extends Scene {
+	private Label label;
+	private TextField textField;
+
 	public MainScene(Scene parent) {
 		super(parent);
 		BordersRelativeLayout l = new BordersRelativeLayout();
@@ -20,5 +24,11 @@ public class MainScene extends Scene {
 		Label creditsLabel = new Label(this, creditsString, 0, Theme.getUiFont(), 0.65);
 		addElement(creditsLabel);
 		l.place(creditsLabel, new Integer[]{0, -10, 400, 20, 0, 1});
+
+		String furiganaExample = "ドミトリーと 申[もう]します。どうぞよろしくお 願[ねが]いします。";
+		label = new Label(this, furiganaExample, 0, Theme.getJapaneseFont(), 3);
+		label.setDisplayFurigana(true);
+		addElement(label);
+		l.place(label, new Integer[]{0, 100, 1000, 100, 0, 0});
 	}
 }

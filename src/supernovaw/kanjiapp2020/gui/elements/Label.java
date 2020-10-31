@@ -1,5 +1,6 @@
 package supernovaw.kanjiapp2020.gui.elements;
 
+import supernovaw.kanjiapp2020.cards.FuriganaText;
 import supernovaw.kanjiapp2020.gui.*;
 
 import java.awt.*;
@@ -12,6 +13,7 @@ public class Label extends Element {
 	private final Font font;
 	// textChangeAnimate has object parameter Area (old textArea) or String if no Area is available
 	private final FadeOutAnimation fadingText;
+	private boolean displayFurigana;
 
 	public Label(Scene parent, String text, int alignHorizontal, Font f) {
 		super(parent);
@@ -35,6 +37,10 @@ public class Label extends Element {
 
 	public Label(Scene parent, String text) {
 		this(parent, text, Theme.getUiFont());
+	}
+
+	public void setDisplayFurigana(boolean displayFurigana) {
+		this.displayFurigana = displayFurigana;
 	}
 
 	public void changeText(String newText) {
@@ -93,16 +99,29 @@ public class Label extends Element {
 			float scale = (float) fitW / w;
 			g.setFont(g.getFont().deriveFont(oldSize * scale));
 
-			double textX = TextUtils.alignStringX(g, text, 0, r.width, alignHorizontal);
+			double textX;
 			double textY = TextUtils.centerStringY(g, r.height / 2);
-			Area result = TextUtils.getTextArea(text, textX, textY, g);
+			Area result;
+			if (displayFurigana) {
+				textX = TextUtils.alignStringX(g, new FuriganaText(text).getText(), 0, r.width, alignHorizontal);
+				result = TextUtils.getTextArea(new FuriganaText(text), textX, textY, g);
+			} else {
+				textX = TextUtils.alignStringX(g, text, 0, r.width, alignHorizontal);
+				result = TextUtils.getTextArea(text, textX, textY, g);
+			}
 
 			g.setFont(g.getFont().deriveFont(oldSize));
 			return result;
 		} else {
-			double textX = TextUtils.alignStringX(g, text, 0, r.width, alignHorizontal);
+			double textX;
 			double textY = TextUtils.centerStringY(g, r.height / 2);
-			return TextUtils.getTextArea(text, textX, textY, g);
+			if (displayFurigana) {
+				textX = TextUtils.alignStringX(g, new FuriganaText(text).getText(), 0, r.width, alignHorizontal);
+				return TextUtils.getTextArea(new FuriganaText(text), textX, textY, g);
+			} else {
+				textX = TextUtils.alignStringX(g, text, 0, r.width, alignHorizontal);
+				return TextUtils.getTextArea(text, textX, textY, g);
+			}
 		}
 	}
 
