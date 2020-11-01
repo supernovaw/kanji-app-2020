@@ -48,7 +48,7 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 
 	@Override
 	public void iterateOverChildren(Consumer<InputListener> c) {
-		elements.forEach(c);
+		for (int i = 0; i < elements.size(); i++) c.accept(elements.get(i));
 	}
 
 	@Override

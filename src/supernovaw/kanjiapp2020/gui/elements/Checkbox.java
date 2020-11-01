@@ -16,7 +16,7 @@ public class Checkbox extends Element {
 	private final int checkboxSize = 16; // side of square
 	private final int checkboxX; // square offset from bounds start
 
-	private final String text;
+	private String text;
 	private boolean checked;
 	private final Ease hoverEase;
 	private final Ease activationEase;
@@ -30,6 +30,11 @@ public class Checkbox extends Element {
 
 		this.text = text;
 		checkboxX = EXPAND + 1; // gap distance from left bounds side to fit when expanding outline
+	}
+
+	public void setText(String text) {
+		this.text = text;
+		textArea = null;
 	}
 
 	@Override
