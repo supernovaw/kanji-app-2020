@@ -40,4 +40,11 @@ public final class Recognition {
 		variants.sort(Comparator.comparingDouble(ComparisonResultEntry::getDifference));
 		return variants.get(0).getChars();
 	}
+
+	public static boolean hasCharacter(String character) {
+		if (Character.codePointCount(character, 0, character.length()) != 1)
+			throw new IllegalArgumentException("There has to be one character in the input string: " + character);
+		int codePoint = Character.codePointAt(character, 0);
+		return allWritings.containsKey(codePoint);
+	}
 }
