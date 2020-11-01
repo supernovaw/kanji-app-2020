@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 public abstract class Scene extends Element implements InputEventsForwarder {
 	private final List<Element> elements;
 	private Layout layout;
+	private boolean displayed;
 
 	public Scene(Scene parent) {
 		super(parent);
@@ -74,6 +75,7 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 
 	@Override
 	protected void repaint(Rectangle r) {
+		if (!displayed) return;
 		Rectangle thisSceneBounds = getBounds();
 		Rectangle repaintBoundsInParent = new Rectangle(r);
 		repaintBoundsInParent.x += thisSceneBounds.x;
@@ -82,22 +84,26 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 	}
 
 	protected void refreshMousePosition() {
+		if (!displayed) return;
 		parent.refreshMousePosition();
 	}
 
 	protected void stackAdd(Class<? extends Scene> sceneClass) {
+		if (!displayed) return;
 		checkStackAvailability();
 		StackScene ss = (StackScene) parent.parent;
 		ss.add(sceneClass);
 	}
 
 	protected void stackChange(Class<? extends Scene> sceneClass) {
+		if (!displayed) return;
 		checkStackAvailability();
 		StackScene ss = (StackScene) parent.parent;
 		ss.change(sceneClass);
 	}
 
 	protected void stackRemove() {
+		if (!displayed) return;
 		checkStackAvailability();
 		StackScene ss = (StackScene) parent.parent;
 		ss.remove();
@@ -125,6 +131,11 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 
 	@Override
 	protected void setDisplayed(boolean displayed) {
+		this.displayed = displayed;
 		elements.forEach(e -> e.setDisplayed(displayed));
+	}
+
+	protected final boolean isDisplayed() {
+		return displayed;
 	}
 }
