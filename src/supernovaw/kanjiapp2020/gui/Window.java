@@ -18,7 +18,7 @@ public final class Window {
 	private boolean fullscreen;
 
 	public Window(String title, int width, int height, List<Image> icons) {
-		rootScene = new WindowControlsScene(new Dimension(500, 500), this);
+		rootScene = new WindowControlsScene(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT), this);
 
 		rootScene.onSizeChanged(new Dimension(width, height));
 		initFrame(title, width, height, icons);

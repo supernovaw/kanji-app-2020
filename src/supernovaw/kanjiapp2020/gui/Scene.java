@@ -63,13 +63,21 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 		g.translate(r.x, r.y);
 
 		Rectangle clip = g.getClipBounds();
+		Shape initialClip = g.getClip();
 		boolean ignoreClip = clip.contains(getRepaintBounds());
 		// skip the elements that are not covered by the clip if possible
 
-		if (ignoreClip) elements.forEach(e -> e.paint(g));
-		else elements.forEach(element -> {
-			if (clip.intersects(element.getRepaintBounds())) element.paint(g);
+		if (ignoreClip) elements.forEach(element -> {
+			g.setClip(element.getRepaintBounds().intersection(clip));
+			element.paint(g);
 		});
+		else elements.forEach(element -> {
+			if (clip.intersects(element.getRepaintBounds())) {
+				g.setClip(element.getRepaintBounds().intersection(clip));
+				element.paint(g);
+			}
+		});
+		g.setClip(initialClip);
 		g.translate(-r.x, -r.y);
 	}
 
