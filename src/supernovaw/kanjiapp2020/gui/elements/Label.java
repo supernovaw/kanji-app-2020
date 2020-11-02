@@ -90,8 +90,18 @@ public class Label extends Element {
 		g.translate(-r.x, -r.y);
 	}
 
+	@Override
+	protected Rectangle getRepaintBounds() {
+		Rectangle r = getBounds();
+		if (displayFurigana) r.grow(font.getSize(), 0);
+		return r;
+	}
+
 	private Area getTextArea(String text, Graphics2D g) {
-		int w = g.getFontMetrics().stringWidth(text);
+		int w;
+		if (displayFurigana) w = g.getFontMetrics().stringWidth(new FuriganaText(text).getText());
+		else w = g.getFontMetrics().stringWidth(text);
+
 		Rectangle r = getBounds();
 		int fitW = r.width - 10;
 		if (w > fitW) {
