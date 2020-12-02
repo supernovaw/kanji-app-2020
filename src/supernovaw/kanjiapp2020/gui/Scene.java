@@ -2,6 +2,7 @@ package supernovaw.kanjiapp2020.gui;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -133,6 +134,15 @@ public abstract class Scene extends Element implements InputEventsForwarder {
 		InputEventsForwarder.super.keyPressed(e);
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && parent != null &&
 				parent.parent instanceof StackScene && stackRemoveAvailable()) {
+			stackRemove();
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		InputEventsForwarder.super.mousePressed(e);
+		if (e.getButton() == 4 && parent != null && parent.parent
+				instanceof StackScene && stackRemoveAvailable()) {
 			stackRemove();
 		}
 	}
