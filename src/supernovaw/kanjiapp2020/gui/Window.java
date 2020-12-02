@@ -16,13 +16,16 @@ public final class Window {
 	private JFrame frame;
 	private JPanel frameContent;
 	private boolean fullscreen;
+	private FadeOutAnimation fullscreenSwitchRepaintCaller;
 
 	public Window(String title, int width, int height, List<Image> icons) {
 		rootScene = new WindowControlsScene(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT), this);
 
 		rootScene.onSizeChanged(new Dimension(width, height));
 		initFrame(title, width, height, icons);
-		rootScene.setCallers(() -> frameContent.repaint(), rect -> frameContent.repaint(rect), this::refreshMousePosition);
+		fullscreenSwitchRepaintCaller = new FadeOutAnimation(1, frame::repaint);
+		fullscreenSwitchRepaintCaller.setDisplayed(true);
+		rootScene.setCallers(frameContent::repaint, frameContent::repaint, this::refreshMousePosition);
 		rootScene.setDisplayed(true);
 		InputEvents.redirectEvents(frame, rootScene);
 	}
@@ -67,6 +70,9 @@ public final class Window {
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 
 				rootScene.paint(g2d);
+
+				// invoking getPhase is necessary for the repaint calls to stop when they should
+				fullscreenSwitchRepaintCaller.getPhase();
 			}
 		};
 		frame.setContentPane(frameContent);
@@ -124,7 +130,7 @@ public final class Window {
 		}
 		fullscreen = !fullscreen;
 		rootScene.onFullscreenChanged(fullscreen);
-		frame.repaint();
+		fullscreenSwitchRepaintCaller.animate();
 	}
 
 	protected void hideWindow() {
